@@ -19,6 +19,7 @@ export default {
     },
     extend: {
       colors: {
+        border: "hsl(var(--border))",
         funnel: {
           primary: "#5850EC",
           secondary: "#E9E7FD",
