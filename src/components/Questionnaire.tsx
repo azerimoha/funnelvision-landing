@@ -16,19 +16,19 @@ const Questionnaire = ({ onComplete }: QuestionnaireProps) => {
 
   const questions = [
     {
-      id: 'website',
-      question: 'Do you currently have a website?',
-      options: ['Yes', 'No', 'Under Development']
+      id: "website",
+      question: "Do you currently have a website?",
+      options: ["Yes", "No", "Under Development"]
     },
     {
-      id: 'budget',
-      question: 'What's your monthly marketing budget?',
-      options: ['$0-$500', '$501-$2000', '$2000+']
+      id: "budget",
+      question: "What's your monthly marketing budget?",
+      options: ["$0-$500", "$501-$2000", "$2000+"]
     },
     {
-      id: 'timeline',
-      question: 'When do you want to start?',
-      options: ['Immediately', 'Within 1 Month', '3+ Months']
+      id: "timeline",
+      question: "When do you want to start?",
+      options: ["Immediately", "Within 1 Month", "3+ Months"]
     }
   ];
 
