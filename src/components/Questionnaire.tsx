@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { Progress } from "@/components/ui/progress";
 
 interface QuestionnaireProps {
   onComplete: () => void;
@@ -32,6 +33,8 @@ const Questionnaire = ({ onComplete }: QuestionnaireProps) => {
     }
   ];
 
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+
   const handleAnswer = (value: string) => {
     setAnswers(prev => ({
       ...prev,
@@ -59,6 +62,13 @@ const Questionnaire = ({ onComplete }: QuestionnaireProps) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-funnel-secondary/30 px-4">
       <Card className="w-full max-w-lg p-8">
+        <div className="mb-6">
+          <Progress value={progress} className="h-2" />
+          <p className="text-sm text-muted-foreground mt-2">
+            Question {currentQuestion + 1} of {questions.length}
+          </p>
+        </div>
+        
         <h2 className="text-2xl font-bold text-center mb-8">
           Let's find the perfect solution for you
         </h2>
