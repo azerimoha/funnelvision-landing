@@ -4,14 +4,10 @@ import { ArrowDown } from 'lucide-react';
 
 interface HeroSectionProps {
   onScrollToQuestionnaire: () => void;
+  onDownloadGuide: () => void;
 }
 
-const HeroSection = ({ onScrollToQuestionnaire }: HeroSectionProps) => {
-  const handleDownloadGuide = () => {
-    // In a real app, this would trigger the download
-    console.log("Downloading guide...");
-  };
-
+const HeroSection = ({ onScrollToQuestionnaire, onDownloadGuide }: HeroSectionProps) => {
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {/* Video Background */}
@@ -40,7 +36,7 @@ const HeroSection = ({ onScrollToQuestionnaire }: HeroSectionProps) => {
         
         <div className="flex flex-col sm:flex-row gap-4">
           <Button
-            onClick={handleDownloadGuide}
+            onClick={onDownloadGuide}
             size="lg"
             className="bg-funnel-primary hover:bg-funnel-primary/90 text-white px-8"
           >

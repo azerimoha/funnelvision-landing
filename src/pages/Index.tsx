@@ -8,62 +8,42 @@ const Index = () => {
   const questionnaireRef = useRef<HTMLDivElement>(null);
   const bookingRef = useRef<HTMLDivElement>(null);
   const [questionnaireCompleted, setQuestionnaireCompleted] = useState(false);
-  const [hasOptedIn, setHasOptedIn] = useState(false);
   const [showEmailDialog, setShowEmailDialog] = useState(false);
+  const [emailAction, setEmailAction] = useState<'guide' | 'questionnaire'>('questionnaire');
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  // Prevent scroll when conditions are not met
+  // Prevent all scrolling
   useEffect(() => {
-    const handleScroll = (e: WheelEvent | TouchEvent) => {
-      const scrollPosition = window.scrollY;
-      const questionnairePosition = questionnaireRef.current?.offsetTop || 0;
-      
-      // If we haven't opted in yet, prevent scrolling past hero section
-      if (!hasOptedIn && scrollPosition > 100) {
-        e.preventDefault();
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-        return false;
-      }
-
-      // If we're at or past the questionnaire section but haven't completed it
-      if (scrollPosition >= questionnairePosition && !questionnaireCompleted) {
-        e.preventDefault();
-        window.scrollTo({
-          top: questionnairePosition,
-          behavior: 'smooth'
-        });
-        return false;
-      }
+    const preventDefault = (e: Event) => {
+      e.preventDefault();
     };
 
-    // Add both wheel and touch event listeners
-    window.addEventListener('wheel', handleScroll, { passive: false });
-    window.addEventListener('touchmove', handleScroll, { passive: false });
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('wheel', preventDefault, { passive: false });
+    window.addEventListener('touchmove', preventDefault, { passive: false });
 
     return () => {
-      window.removeEventListener('wheel', handleScroll);
-      window.removeEventListener('touchmove', handleScroll);
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('wheel', preventDefault);
+      window.removeEventListener('touchmove', preventDefault);
     };
-  }, [questionnaireCompleted, hasOptedIn]);
-
-  const handleOptIn = () => {
-    setShowEmailDialog(true);
-  };
+  }, []);
 
   const handleEmailSubmit = (email: string) => {
+    console.log('Email submitted:', email);
     setUserEmail(email);
-    setHasOptedIn(true);
     setShowEmailDialog(false);
-    scrollToQuestionnaire();
+
+    if (emailAction === 'guide') {
+      console.log('Downloading guide...');
+      // Handle guide download logic here
+    } else {
+      scrollToQuestionnaire();
+    }
   };
 
   const scrollToQuestionnaire = () => {
-    if (hasOptedIn) {
-      questionnaireRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    questionnaireRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const scrollToBooking = () => {
@@ -72,20 +52,35 @@ const Index = () => {
     }
   };
 
+  const handleGetStarted = () => {
+    setEmailAction('questionnaire');
+    setShowEmailDialog(true);
+  };
+
+  const handleDownloadGuide = () => {
+    setEmailAction('guide');
+    setShowEmailDialog(true);
+  };
+
   const handleQuestionnaireComplete = () => {
     setQuestionnaireCompleted(true);
     scrollToBooking();
   };
 
   return (
-    <main className="relative">
-      <HeroSection onScrollToQuestionnaire={handleOptIn} />
+    <main className="relative h-screen overflow-hidden">
+      <div className="h-screen">
+        <HeroSection 
+          onScrollToQuestionnaire={handleGetStarted}
+          onDownloadGuide={handleDownloadGuide}
+        />
+      </div>
       
-      <div ref={questionnaireRef}>
+      <div ref={questionnaireRef} className="h-screen">
         <Questionnaire onComplete={handleQuestionnaireComplete} />
       </div>
       
-      <div ref={bookingRef}>
+      <div ref={bookingRef} className="h-screen">
         <BookingSection />
       </div>
 
