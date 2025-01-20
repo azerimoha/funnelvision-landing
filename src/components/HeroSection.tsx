@@ -52,7 +52,7 @@ const HeroSection = ({ onScrollToQuestionnaire }: HeroSectionProps) => {
             size="lg"
             className="bg-white/10 hover:bg-white/20 text-white border-white px-8"
           >
-            Opt In
+            Get Started
           </Button>
         </div>
 
